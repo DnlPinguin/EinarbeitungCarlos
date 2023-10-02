@@ -10,17 +10,17 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 
 class Application extends App implements IBootstrap {
-public const APP_ID = 'doorman';
+    public const APP_ID = 'doorman';
 
-public function __construct(array $urlParams = []) {
-parent::__construct(self::APP_ID, $urlParams);
-}
+    public function __construct(array $urlParams = []) {
+        parent::__construct(self::APP_ID, $urlParams);
+    }
 
-public function register(IRegistrationContext $context): void {
-$context->registerDashboardWidget(SimpleWidget::class);
-$context->registerDashboardWidget(StopWatch::class);
-}
+    public function register(IRegistrationContext $context): void {
+        $context->registerDashboardWidget(SimpleWidget::class);
+        $context->registerDashboardWidget(StopWatch::class);
+    }
 
-public function boot(IBootContext $context): void {
-}
+    public function boot(IBootContext $context): void {
+    }
 }

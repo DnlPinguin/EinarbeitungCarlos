@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template >
   <div id="timer">
     <div class="bg-light">
@@ -42,16 +43,34 @@
       </div>
     </div>
   </div>
+=======
+<template>
+	<div id="timer">
+		{{ timeInSecond }}
+		<div>
+			<div class="start" @click="start">
+				Start
+			</div>
+			<div class="pause" @click="pause">
+				Pause
+			</div>
+			<div class="Reset" @click="reset">
+				Reset
+			</div>
+		</div>
+	</div>
+>>>>>>> b757ab3ca66fcc7ec416625fb9777c326e8b595c
 </template>
 
 <script>
 export default {
-  name: "StopwatchTimer",
+	name: 'StopwatchTimer',
 
-  components: {},
+	components: {},
 
-  props: {},
+	props: {},
 
+<<<<<<< HEAD
   data() {
     return {
       isPause: false,
@@ -140,19 +159,43 @@ export default {
       return dateString;
     },
   },
+=======
+	data() {
+		return {
+			isPause: false,
+			timeInSecond: 0,
+		}
+	},
+>>>>>>> b757ab3ca66fcc7ec416625fb9777c326e8b595c
 
-  computed: {},
+	computed: {},
 
-  watch: {},
+	watch: {},
 
-  beforeDestroy() {},
+	beforeDestroy() {},
 
-  beforeMount() {},
+	beforeMount() {},
 
-  mounted() {},
-};
+	mounted() {},
+	methods: {
+		start() {
+			// eslint-disable-next-line no-console
+			console.log('click')
+
+			if (!this.isPause) {
+				setInterval(() => {
+					// eslint-disable-next-line no-console
+					console.log('time')
+				}, 1000)
+			}
+		},
+		pause() {},
+		reset() {},
+	},
+}
 </script>
 
+<<<<<<< HEAD
 <style scoped>
 .bg-light {
   background-color: #e9e9e9;
@@ -218,3 +261,8 @@ export default {
   font-weight: bold;
 }
 </style>
+=======
+<style scoped lang="scss">
+// nothing
+</style>
+>>>>>>> b757ab3ca66fcc7ec416625fb9777c326e8b595c
