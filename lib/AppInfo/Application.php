@@ -11,6 +11,9 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 
 class Application extends App implements IBootstrap {
     public const APP_ID = 'doorman';
+    public const INTEGRATION_USER_AGENT = 'Nextcloud Doorman Integration';
+    public const DOORMAN_API_URL = 'https://umtsdevel.lucksmith.dev/';
+    public const DOORMAN_OAUTH_ACCESS_URL = 'https://umtsdevel.lucksmith.dev/auth/login';
 
     public function __construct(array $urlParams = []) {
         parent::__construct(self::APP_ID, $urlParams);
