@@ -15,7 +15,6 @@ function renderWidget(el) {
 	paragraph.textContent = t('doorman', 'You can define the frontend part of a widget with plain Javascript.')
 	el.append(paragraph)
 
-
 	const list = document.createElement('ul')
 	list.classList.add('widget-list')
 	gifItems.forEach(item => {
