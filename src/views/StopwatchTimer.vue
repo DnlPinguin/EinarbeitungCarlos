@@ -1,55 +1,57 @@
 <template >
   <div id="timer">
-    <div class="bg-light">
-      <p class="presentation">{{ name }} Einarbeitung</p>
-      <div id="currentDayAndDate">
-        <center>{{ getTheCurrentDay() }}. {{ getCurrentDate() }}</center>
-      </div>
-      <div id="RegisteredTime">Eingestempelt um {{ getTheCurrentTime() }}</div>
-      <div id="workingTime" v-show="!isPause">
-        <h4>
-          <b> {{ secondsToHMS(worktime) }}</b>
-        </h4>
-      </div>
-      <div id="pauseTime">
-        <div>
-          <div v-if="!isPause">
-            <center>
+    <div>
+      <div class="bg-light">
+        <p class="presentation">{{ name }} Einarbeitung</p>
+        <div id="currentDayAndDate">
+          {{ getTheCurrentDay() }}. {{ getCurrentDate() }}
+        </div>
+        <div id="RegisteredTime">
+          Eingestempelt um {{ getTheCurrentTime() }}
+        </div>
+        <div id="workingTime" class="bigText" v-show="!isPause">
+          <h4>
+            <b> {{ secondsToHMS(worktime) }}</b>
+          </h4>
+        </div>
+        <div id="pauseTime">
+          <div>
+            <div v-if="!isPause">
               <small>Pause</small>
               <br />
               {{ secondsToHMS(pauseTime) }}
-            </center>
-          </div>
-          <div v-else>
-            <center>
+            </div>
+            <div v-else>
               <div class="bigText">
                 {{ secondsToHMS(pauseTime) }}
               </div>
               <small> Arbeitszeit</small><br />
               <small> {{ secondsToHMS(worktime) }}</small>
-            </center>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div v-if="isStart">
-        <div>
-          <div v-if="!isPause">
-            <div class="pause btn btn-orange w-100" @click="StartPause">
-              Pause starten
-            </div>
-          </div>
-          <div v-else>
-            <div class="pause btn btn-green w-100" @click="StopPause">
-              Pause beeden
             </div>
           </div>
         </div>
-        <div class="Reset btn btn-red w-100" @click="reset">Ausstempeln</div>
       </div>
-      <div v-else>
-        <div class="start btn btn-green w-100" @click="start">Einstempeln</div>
+      <div>
+        <div v-if="isStart">
+          <div>
+            <div v-if="!isPause">
+              <div class="pause btn btn-orange w-100" @click="StartPause">
+                Pause starten
+              </div>
+            </div>
+            <div v-else>
+              <div class="pause btn btn-green w-100" @click="StopPause">
+                Pause beeden
+              </div>
+            </div>
+          </div>
+          <div class="Reset btn btn-red w-100" @click="reset">Ausstempeln</div>
+        </div>
+        <div v-else>
+          <div class="start btn btn-green w-100" @click="start">
+            Einstempeln
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -178,6 +180,10 @@ export default {
   padding: 40px;
   border-radius: 10px;
   background: #fff !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .w-100 {
   width: 100% !important;
@@ -226,9 +232,5 @@ export default {
 .pauseTime {
   font-size: 14px;
   text-align: center !important;
-}
-#workingTime {
-  font-size: 40px;
-  font-weight: bold;
 }
 </style>
