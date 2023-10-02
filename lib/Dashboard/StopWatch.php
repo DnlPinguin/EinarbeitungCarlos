@@ -48,7 +48,7 @@ class StopWatch implements IAPIWidget {
 	 * @inheritDoc
 	 */
 	public function getTitle(): string {
-		return $this->l10n->t('Vue widget');
+		return $this->l10n->t('Carlos Einarbeitung');
 	}
 
 	/**
