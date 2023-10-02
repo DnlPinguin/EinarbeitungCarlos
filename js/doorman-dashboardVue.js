@@ -231,7 +231,16 @@ __webpack_require__.r(__webpack_exports__);
   data() {
     return {
       isPause: false,
-      timeInSecond: 0
+      isReadyToStart: true,
+      isStart: false,
+      timeInSecond: 0,
+      name: 'carlos',
+      startTime: null,
+      pauseTime: 0,
+      worktime: 0,
+      registeredTime: 0,
+      workingTimeInterval: null,
+      pauseTimeInterval: null
     };
   },
   computed: {},
@@ -241,17 +250,71 @@ __webpack_require__.r(__webpack_exports__);
   mounted() {},
   methods: {
     start() {
-      // eslint-disable-next-line no-console
-      console.log('click');
-      if (!this.isPause) {
-        setInterval(() => {
-          // eslint-disable-next-line no-console
-          console.log('time');
+      this.isStart = true;
+      this.isPause = false;
+      this.isReadyToStart = true;
+      if (this.isReadyToStart) {
+        this.workingTimeInterval = setInterval(() => {
+          this.worktime++;
         }, 1000);
       }
     },
-    pause() {},
-    reset() {}
+    StartPause() {
+      clearInterval(this.workingTimeInterval);
+      this.isPause = true;
+      if (this.isPause) {
+        this.pauseTimeInterval = setInterval(() => {
+          this.pauseTime++;
+        }, 1000);
+      }
+    },
+    StopPause() {
+      clearInterval(this.pauseTimeInterval);
+      this.isPause = false;
+      this.isReadyToStart = true;
+      this.start();
+    },
+    reset() {
+      this.isStart = false;
+      clearInterval(this.pauseTimeInterval);
+      clearInterval(this.workingTimeInterval);
+    },
+    secondsToHMS(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor(seconds % 3600 / 60);
+      const remainingSeconds = seconds % 60;
+      const formattedHours = String(hours).padStart(2, '0');
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+      const timeString = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+      return timeString;
+    },
+    getTheCurrentDay() {
+      const currentDate = new Date();
+      const dayOfWeek = currentDate.getDay();
+      const dayNames = ['sun', 'Mo', 'di', 'do', 'mit', 'fr', 'sat'];
+      const currentDay = dayNames[dayOfWeek];
+      return currentDay;
+    },
+    getTheCurrentTime() {
+      const currentDate = new Date();
+      const hours = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+      const formattedHours = String(hours).padStart(2, '0');
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const currentTime = `${formattedHours}:${formattedMinutes}`;
+      return currentTime;
+    },
+    getCurrentDate() {
+      const currentDate = new Date();
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+      const year = currentDate.getFullYear();
+      const formattedDay = String(day).padStart(2, '0');
+      const formattedMonth = String(month).padStart(2, '0');
+      const dateString = `${formattedDay}.${formattedMonth}.${year}`;
+      return dateString;
+    }
   }
 });
 
@@ -276,22 +339,47 @@ var render = function render() {
     attrs: {
       id: "timer"
     }
-  }, [_vm._v("\n\t" + _vm._s(_vm.timeInSecond) + "\n\t"), _c("div", [_c("div", {
-    staticClass: "start",
-    on: {
-      click: _vm.start
+  }, [_c("div", {
+    staticClass: "bg-light"
+  }, [_c("p", {
+    staticClass: "presentation"
+  }, [_vm._v("\n\t\t\t" + _vm._s(_vm.name) + " Einarbeitung\n\t\t")]), _vm._v(" "), _c("div", {
+    attrs: {
+      id: "currentDayAndDate"
     }
-  }, [_vm._v("\n\t\t\tStart\n\t\t")]), _vm._v(" "), _c("div", {
-    staticClass: "pause",
-    on: {
-      click: _vm.pause
+  }, [_c("center", [_vm._v(_vm._s(_vm.getTheCurrentDay()) + ". " + _vm._s(_vm.getCurrentDate()))])], 1), _vm._v(" "), _c("div", {
+    attrs: {
+      id: "RegisteredTime"
     }
-  }, [_vm._v("\n\t\t\tPause\n\t\t")]), _vm._v(" "), _c("div", {
-    staticClass: "Reset",
+  }, [_vm._v("\n\t\t\tEingestempelt um " + _vm._s(_vm.getTheCurrentTime()) + "\n\t\t")]), _vm._v(" "), _c("div", {
+    attrs: {
+      id: "workingTime"
+    }
+  }, [_c("h4", [_c("b", [_vm._v(" " + _vm._s(_vm.secondsToHMS(_vm.worktime)))])])]), _vm._v(" "), _c("div", {
+    attrs: {
+      id: "pauseTime"
+    }
+  }, [_c("div", [_c("center", [_c("small", [_vm._v("Pause")]), _vm._v(" "), _c("br"), _vm._v("\n\t\t\t\t\t" + _vm._s(_vm.secondsToHMS(_vm.pauseTime)) + "\n\t\t\t\t")])], 1)])]), _vm._v(" "), _c("div", [_vm.isStart ? _c("div", [_c("div", [!_vm.isPause ? _c("div", [_c("div", {
+    staticClass: "pause btn btn-orange w-100",
+    on: {
+      click: _vm.StartPause
+    }
+  }, [_vm._v("\n\t\t\t\t\t\tPause starten\n\t\t\t\t\t")])]) : _c("div", [_c("div", {
+    staticClass: "pause btn btn-green w-100",
+    on: {
+      click: _vm.StopPause
+    }
+  }, [_vm._v("\n\t\t\t\t\t\tPause beeden\n\t\t\t\t\t")])])]), _vm._v(" "), _c("div", {
+    staticClass: "Reset btn btn-red w-100",
     on: {
       click: _vm.reset
     }
-  }, [_vm._v("\n\t\t\tReset\n\t\t")])])]);
+  }, [_vm._v("\n\t\t\t\tAusstempeln\n\t\t\t")])]) : _c("div", [_c("div", {
+    staticClass: "start btn btn-green w-100",
+    on: {
+      click: _vm.start
+    }
+  }, [_vm._v("\n\t\t\t\tEinstempeln\n\t\t\t")])])])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -3254,10 +3342,10 @@ fixRegExpWellKnownSymbolLogic('replace', function (_, nativeReplace, maybeCallNa
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3274,7 +3362,71 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, ""]);
+___CSS_LOADER_EXPORT___.push([module.id, `
+.bg-light[data-v-0ce2ddf2] {
+  background-color: #e9e9e9;
+  color: #000;
+  padding: 20px;
+  border-radius: 10px;
+}
+#timer[data-v-0ce2ddf2] {
+  border: 1px solid #999 !important;
+  padding: 40px;
+  border-radius: 10px;
+}
+.w-100[data-v-0ce2ddf2] {
+  width: 100% !important;
+}
+.btn-green[data-v-0ce2ddf2] {
+  background: #7fc167 !important;
+  border-color: #69a054 !important;
+}
+.presentation[data-v-0ce2ddf2] {
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+.btn-orange[data-v-0ce2ddf2] {
+  background: #e99140 !important;
+  border-color: #c66b17 !important;
+}
+.btn-red[data-v-0ce2ddf2] {
+  background: #cf4949 !important;
+  border-color: #a12a2a !important;
+}
+.btn[data-v-0ce2ddf2] {
+  height: 50px;
+  min-height: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  color: #f8f8f8;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 4px;
+  font-family: inherit;
+  transition: opacity 0.3s, color 0.3s, background-color 0.3s, border-color 0.3s,
+    height 0.3s;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 10px;
+  margin-top: 10px;
+}
+.pauseTime[data-v-0ce2ddf2] {
+  font-size: 14px;
+  text-align: center !important;
+}
+#workingTime[data-v-0ce2ddf2] {
+  font-size: 40px;
+  font-weight: bold;
+}
+`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5162,10 +5314,10 @@ function escapeHtml(string) {
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5185,7 +5337,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/dist/cjs.js!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&");
 
       
       
@@ -5207,12 +5359,12 @@ options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWi
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_6__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
 
 
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -5503,7 +5655,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _StopwatchTimer_vue_vue_type_template_id_0ce2ddf2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StopwatchTimer.vue?vue&type=template&id=0ce2ddf2&scoped=true& */ "./src/views/StopwatchTimer.vue?vue&type=template&id=0ce2ddf2&scoped=true&");
 /* harmony import */ var _StopwatchTimer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StopwatchTimer.vue?vue&type=script&lang=js& */ "./src/views/StopwatchTimer.vue?vue&type=script&lang=js&");
-/* harmony import */ var _StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& */ "./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&");
+/* harmony import */ var _StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& */ "./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -5564,15 +5716,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&":
-/*!************************************************************************************************!*\
-  !*** ./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& ***!
-  \************************************************************************************************/
+/***/ "./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&":
+/*!***********************************************************************************************!*\
+  !*** ./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& ***!
+  \***********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/dist/cjs.js!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_StopwatchTimer_vue_vue_type_style_index_0_id_0ce2ddf2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/StopwatchTimer.vue?vue&type=style&index=0&id=0ce2ddf2&scoped=true&lang=css&");
 
 
 /***/ }),

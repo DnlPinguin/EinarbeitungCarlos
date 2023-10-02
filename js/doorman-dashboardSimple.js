@@ -5638,9 +5638,6 @@ function renderWidget(el) {
   const paragraph = document.createElement('p');
   paragraph.textContent = (0,_nextcloud_l10n__WEBPACK_IMPORTED_MODULE_0__.translate)('doorman', 'You can define the frontend part of a widget with plain Javascript.');
   el.append(paragraph);
-  const paragraph2 = document.createElement('p');
-  paragraph2.textContent = (0,_nextcloud_l10n__WEBPACK_IMPORTED_MODULE_0__.translate)('doorman', 'Here is the list of files in your gif folder:');
-  el.append(paragraph2);
   const list = document.createElement('ul');
   list.classList.add('widget-list');
   gifItems.forEach(item => {

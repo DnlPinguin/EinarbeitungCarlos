@@ -1,156 +1,164 @@
-<template >
-  <div id="timer">
-    <div class="bg-light">
-      <p class="presentation">{{ name }} Einarbeitung</p>
-      <div id="currentDayAndDate">
-        <center>{{ getTheCurrentDay() }}. {{ getCurrentDate() }}</center>
-      </div>
-      <div id="RegisteredTime">Eingestempelt um {{ getTheCurrentTime() }}</div>
-      <div id="workingTime">
-        <h4>
-          <b> {{ secondsToHMS(worktime) }}</b>
-        </h4>
-      </div>
-      <div id="pauseTime">
-        <div>
-          <center>
-            <small>Pause</small>
-            <br />
-            {{ secondsToHMS(pauseTime) }}
-          </center>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div v-if="isStart">
-        <div>
-          <div v-if="!isPause">
-            <div class="pause btn btn-orange w-100" @click="StartPause">
-              Pause starten
-            </div>
-          </div>
-          <div v-else>
-            <div class="pause btn btn-green w-100" @click="StopPause">
-              Pause beeden
-            </div>
-          </div>
-        </div>
-        <div class="Reset btn btn-red w-100" @click="reset">Ausstempeln</div>
-      </div>
-      <div v-else>
-        <div class="start btn btn-green w-100" @click="start">Einstempeln</div>
-      </div>
-    </div>
-  </div>
+<template>
+	<div id="timer">
+		<div class="bg-light">
+			<p class="presentation">
+				{{ name }} Einarbeitung
+			</p>
+			<div id="currentDayAndDate">
+				<center>{{ getTheCurrentDay() }}. {{ getCurrentDate() }}</center>
+			</div>
+			<div id="RegisteredTime">
+				Eingestempelt um {{ getTheCurrentTime() }}
+			</div>
+			<div id="workingTime">
+				<h4>
+					<b> {{ secondsToHMS(worktime) }}</b>
+				</h4>
+			</div>
+			<div id="pauseTime">
+				<div>
+					<center>
+						<small>Pause</small>
+						<br>
+						{{ secondsToHMS(pauseTime) }}
+					</center>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div v-if="isStart">
+				<div>
+					<div v-if="!isPause">
+						<div class="pause btn btn-orange w-100" @click="StartPause">
+							Pause starten
+						</div>
+					</div>
+					<div v-else>
+						<div class="pause btn btn-green w-100" @click="StopPause">
+							Pause beeden
+						</div>
+					</div>
+				</div>
+				<div class="Reset btn btn-red w-100" @click="reset">
+					Ausstempeln
+				</div>
+			</div>
+			<div v-else>
+				<div class="start btn btn-green w-100" @click="start">
+					Einstempeln
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: "StopwatchTimer",
+	name: 'StopwatchTimer',
 
-  components: {},
+	components: {},
 
-  props: {},
+	props: {},
 
-  data() {
-    return {
-      isPause: false,
-      isReadyToStart: true,
-      isStart: false,
-      timeInSecond: 0,
-      name: "carlos",
-      startTime: null,
-      pauseTime: 0,
-      worktime: 0,
-      registeredTime: 0,
-      workingTimeInterval: null,
-      pauseTimeInterval: null,
-    };
-  },
-  methods: {
-    start() {
-      this.isStart = true;
-      this.isPause = false;
-      this.isReadyToStart = true;
-      if (this.isReadyToStart) {
-        this.workingTimeInterval = setInterval(() => {
-          this.worktime++;
-        }, 1000);
-      }
-    },
-    StartPause() {
-      clearInterval(this.workingTimeInterval);
-      this.isPause = true;
-      if (this.isPause) {
-        this.pauseTimeInterval = setInterval(() => {
-          this.pauseTime++;
-        }, 1000);
-      }
-    },
-    StopPause() {
-      clearInterval(this.pauseTimeInterval);
-      this.isPause = false;
-      this.isReadyToStart = true;
-      this.start();
-    },
-    reset() {
-      this.isStart = false;
-      clearInterval(this.pauseTimeInterval);
-      clearInterval(this.workingTimeInterval);
-    },
-    secondsToHMS(seconds) {
-      const hours = Math.floor(seconds / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      const remainingSeconds = seconds % 60;
+	data() {
+		return {
+			isPause: false,
+			isReadyToStart: true,
+			isStart: false,
+			timeInSecond: 0,
+			name: 'carlos',
+			startTime: null,
+			pauseTime: 0,
+			worktime: 0,
+			registeredTime: 0,
+			workingTimeInterval: null,
+			pauseTimeInterval: null,
+		}
+	},
 
-      const formattedHours = String(hours).padStart(2, "0");
-      const formattedMinutes = String(minutes).padStart(2, "0");
-      const formattedSeconds = String(remainingSeconds).padStart(2, "0");
-      const timeString = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+	computed: {},
 
-      return timeString;
-    },
-    getTheCurrentDay() {
-      const currentDate = new Date();
-      const dayOfWeek = currentDate.getDay();
+	watch: {},
 
-      const dayNames = ["sun", "Mo", "di", "do", "mit", "fr", "sat"];
+	beforeDestroy() {},
 
-      const currentDay = dayNames[dayOfWeek];
-      return currentDay;
-    },
-    getTheCurrentTime() {
-      const currentDate = new Date();
-      const hours = currentDate.getHours();
-      const minutes = currentDate.getMinutes();
-      const formattedHours = String(hours).padStart(2, "0");
-      const formattedMinutes = String(minutes).padStart(2, "0");
-      const currentTime = `${formattedHours}:${formattedMinutes}`;
-      return currentTime;
-    },
-    getCurrentDate() {
-      const currentDate = new Date();
-      const day = currentDate.getDate();
-      const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-      const year = currentDate.getFullYear();
-      const formattedDay = String(day).padStart(2, "0");
-      const formattedMonth = String(month).padStart(2, "0");
-      const dateString = `${formattedDay}.${formattedMonth}.${year}`;
+	beforeMount() {},
 
-      return dateString;
-    },
-  },
+	mounted() {},
+	methods: {
+		start() {
+			this.isStart = true
+			this.isPause = false
+			this.isReadyToStart = true
+			if (this.isReadyToStart) {
+				this.workingTimeInterval = setInterval(() => {
+					this.worktime++
+				}, 1000)
+			}
+		},
+		StartPause() {
+			clearInterval(this.workingTimeInterval)
+			this.isPause = true
+			if (this.isPause) {
+				this.pauseTimeInterval = setInterval(() => {
+					this.pauseTime++
+				}, 1000)
+			}
+		},
+		StopPause() {
+			clearInterval(this.pauseTimeInterval)
+			this.isPause = false
+			this.isReadyToStart = true
+			this.start()
+		},
+		reset() {
+			this.isStart = false
+			clearInterval(this.pauseTimeInterval)
+			clearInterval(this.workingTimeInterval)
+		},
+		secondsToHMS(seconds) {
+			const hours = Math.floor(seconds / 3600)
+			const minutes = Math.floor((seconds % 3600) / 60)
+			const remainingSeconds = seconds % 60
 
-  computed: {},
+			const formattedHours = String(hours).padStart(2, '0')
+			const formattedMinutes = String(minutes).padStart(2, '0')
+			const formattedSeconds = String(remainingSeconds).padStart(2, '0')
+			const timeString = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
 
-  watch: {},
+			return timeString
+		},
+		getTheCurrentDay() {
+			const currentDate = new Date()
+			const dayOfWeek = currentDate.getDay()
 
-  beforeDestroy() {},
+			const dayNames = ['sun', 'Mo', 'di', 'do', 'mit', 'fr', 'sat']
 
-  beforeMount() {},
+			const currentDay = dayNames[dayOfWeek]
+			return currentDay
+		},
+		getTheCurrentTime() {
+			const currentDate = new Date()
+			const hours = currentDate.getHours()
+			const minutes = currentDate.getMinutes()
+			const formattedHours = String(hours).padStart(2, '0')
+			const formattedMinutes = String(minutes).padStart(2, '0')
+			const currentTime = `${formattedHours}:${formattedMinutes}`
+			return currentTime
+		},
+		getCurrentDate() {
+			const currentDate = new Date()
+			const day = currentDate.getDate()
+			const month = currentDate.getMonth() + 1 // Months are zero-based, so add 1
+			const year = currentDate.getFullYear()
+			const formattedDay = String(day).padStart(2, '0')
+			const formattedMonth = String(month).padStart(2, '0')
+			const dateString = `${formattedDay}.${formattedMonth}.${year}`
 
-  mounted() {},
-};
+			return dateString
+		},
+	},
+}
 </script>
 
 <style scoped>
