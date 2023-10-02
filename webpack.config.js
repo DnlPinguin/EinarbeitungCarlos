@@ -17,6 +17,7 @@ webpackConfig.stats = {
 const appId = 'doorman'
 webpackConfig.entry = {
     dashboardSimple: { import: path.join(__dirname, 'src', 'dashboardSimple.js'), filename: appId + '-dashboardSimple.js' },
+    dashboardVue: { import: path.join(__dirname, 'src', 'dashboardVue.js'), filename: appId + '-dashboardVue.js' },
 }
 
 // this enables eslint and stylelint during compilation
