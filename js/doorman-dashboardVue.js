@@ -241,9 +241,12 @@ __webpack_require__.r(__webpack_exports__);
   mounted() {},
   methods: {
     start() {
-      if (!this.pause) {
+      // eslint-disable-next-line no-console
+      console.log('click');
+      if (!this.isPause) {
         setInterval(() => {
-          // console.log('time')
+          // eslint-disable-next-line no-console
+          console.log('time');
         }, 1000);
       }
     },
