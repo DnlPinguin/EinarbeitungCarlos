@@ -25,4 +25,10 @@
             <route>doorman.page.index</route>
         </navigation>
     </navigations>
+    <settings>
+        <admin>OCA\Doorman\Settings\Admin</admin>
+        <admin-section>OCA\Doorman\Settings\AdminSection</admin-section>
+        <personal>OCA\Doorman\Settings\Personal</personal>
+        <personal-section>OCA\Doorman\Settings\PersonalSection</personal-section>
+    </settings>
 </info>
