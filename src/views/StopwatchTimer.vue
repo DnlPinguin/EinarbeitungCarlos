@@ -1,5 +1,6 @@
 <template>
   <div id="timer">
+    <p>Time in milliseconds</p>
     {{ timeInSecond }}
     <div>
       <div class="start" @click="start">Start</div>
