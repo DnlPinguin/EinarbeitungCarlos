@@ -352,6 +352,12 @@ var render = function render() {
       id: "RegisteredTime"
     }
   }, [_vm._v("\n\t\t\tEingestempelt um " + _vm._s(_vm.getTheCurrentTime()) + "\n\t\t")]), _vm._v(" "), _c("div", {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.isPause,
+      expression: "!isPause"
+    }],
     attrs: {
       id: "workingTime"
     }
@@ -359,7 +365,9 @@ var render = function render() {
     attrs: {
       id: "pauseTime"
     }
-  }, [_c("div", [_c("center", [_c("small", [_vm._v("Pause")]), _vm._v(" "), _c("br"), _vm._v("\n\t\t\t\t\t" + _vm._s(_vm.secondsToHMS(_vm.pauseTime)) + "\n\t\t\t\t")])], 1)])]), _vm._v(" "), _c("div", [_vm.isStart ? _c("div", [_c("div", [!_vm.isPause ? _c("div", [_c("div", {
+  }, [_c("div", [!_vm.isPause ? _c("div", [_c("center", [_c("small", [_vm._v("Pause")]), _vm._v(" "), _c("br"), _vm._v("\n\t\t\t\t\t\t" + _vm._s(_vm.secondsToHMS(_vm.pauseTime)) + "\n\t\t\t\t\t")])], 1) : _c("div", [_c("center", [_c("div", {
+    staticClass: "bigText"
+  }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(_vm.secondsToHMS(_vm.pauseTime)) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("small", [_vm._v(" Arbeitszeit")]), _c("br"), _vm._v(" "), _c("small", [_vm._v(" " + _vm._s(_vm.secondsToHMS(_vm.worktime)))])])], 1)])])]), _vm._v(" "), _c("div", [_vm.isStart ? _c("div", [_c("div", [!_vm.isPause ? _c("div", [_c("div", {
     staticClass: "pause btn btn-orange w-100",
     on: {
       click: _vm.StartPause
@@ -3363,6 +3371,9 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `
+.bigText[data-v-0ce2ddf2] {
+  font-size: 30px;
+}
 .bg-light[data-v-0ce2ddf2] {
   background-color: #e9e9e9;
   color: #000;
@@ -3370,9 +3381,9 @@ ___CSS_LOADER_EXPORT___.push([module.id, `
   border-radius: 10px;
 }
 #timer[data-v-0ce2ddf2] {
-  border: 1px solid #999 !important;
   padding: 40px;
   border-radius: 10px;
+  background: #fff !important;
 }
 .w-100[data-v-0ce2ddf2] {
   width: 100% !important;

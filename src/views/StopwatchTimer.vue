@@ -10,18 +10,29 @@
 			<div id="RegisteredTime">
 				Eingestempelt um {{ getTheCurrentTime() }}
 			</div>
-			<div id="workingTime">
+			<div v-show="!isPause" id="workingTime">
 				<h4>
 					<b> {{ secondsToHMS(worktime) }}</b>
 				</h4>
 			</div>
 			<div id="pauseTime">
 				<div>
-					<center>
-						<small>Pause</small>
-						<br>
-						{{ secondsToHMS(pauseTime) }}
-					</center>
+					<div v-if="!isPause">
+						<center>
+							<small>Pause</small>
+							<br>
+							{{ secondsToHMS(pauseTime) }}
+						</center>
+					</div>
+					<div v-else>
+						<center>
+							<div class="bigText">
+								{{ secondsToHMS(pauseTime) }}
+							</div>
+							<small> Arbeitszeit</small><br>
+							<small> {{ secondsToHMS(worktime) }}</small>
+						</center>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -162,6 +173,9 @@ export default {
 </script>
 
 <style scoped>
+.bigText {
+  font-size: 30px;
+}
 .bg-light {
   background-color: #e9e9e9;
   color: #000;
@@ -169,9 +183,9 @@ export default {
   border-radius: 10px;
 }
 #timer {
-  border: 1px solid #999 !important;
   padding: 40px;
   border-radius: 10px;
+  background: #fff !important;
 }
 .w-100 {
   width: 100% !important;
